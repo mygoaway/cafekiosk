@@ -28,6 +28,10 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final StockRepository stockRepository;
 
+    /*
+    * 재고 감소 -> 동시성 고민
+    * optimistic lock / pessimistic lock / ...
+    * */
     public OrderResponse createOrder(OrderCreateRequest request, LocalDateTime registeredDateTime) {
         List<String> productNumbers = request.getProductNumbers();
         List<Product> products = findProductsBy(productNumbers);
@@ -37,6 +41,16 @@ public class OrderService {
         Order order = Order.create(products, registeredDateTime);
         Order savedOrder = orderRepository.save(order);
         return OrderResponse.of(savedOrder);
+    }
+
+    private List<Product> findProductsBy(List<String> productNumbers) {
+        List<Product> products = productRepository.findAllByProductNumberIn(productNumbers);
+        Map<String, Product> productMap = products.stream()
+                .collect(Collectors.toMap(Product::getProductNumber, p -> p));
+
+        return productNumbers.stream()
+                .map(productMap::get)
+                .collect(Collectors.toList());
     }
 
     private void deductStockQuantities(List<Product> products) {
@@ -54,16 +68,6 @@ public class OrderService {
             }
             stock.deductQuantity(quantity);
         }
-    }
-
-    private List<Product> findProductsBy(List<String> productNumbers) {
-        List<Product> products = productRepository.findAllByProductNumberIn(productNumbers);
-        Map<String, Product> productMap = products.stream()
-                .collect(Collectors.toMap(Product::getProductNumber, p -> p));
-
-        return productNumbers.stream()
-                .map(productMap::get)
-                .collect(Collectors.toList());
     }
 
     private static List<String> extractStockProductNumbers(List<Product> products) {
