@@ -3,18 +3,14 @@ package sample.cafekiosk.spring.api.service.product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sample.cafekiosk.spring.api.controller.product.dto.request.CreateProductRequest;
+import sample.cafekiosk.spring.api.controller.product.dto.request.ProductCreateRequest;
 import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
 import sample.cafekiosk.spring.domain.product.Product;
 import sample.cafekiosk.spring.domain.product.ProductRepository;
 import sample.cafekiosk.spring.domain.product.ProductSellingStatus;
-import sample.cafekiosk.spring.domain.product.ProductType;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static sample.cafekiosk.spring.domain.product.ProductSellingStatus.SELLING;
-import static sample.cafekiosk.spring.domain.product.ProductType.HANDMADE;
 
 
 /*
@@ -35,7 +31,7 @@ public class ProductService {
     // 동시성 이슈
     // product_number 필드 unique Key 설정 -> 중복이면 시스템적으로 재시도 처리
     @Transactional
-    public ProductResponse createProduct(CreateProductRequest request) {
+    public ProductResponse createProduct(ProductCreateRequest request) {
         String nextProductNumber = createNextProductNumber();
 
         Product product = request.toEntity(nextProductNumber);
