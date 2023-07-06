@@ -3,11 +3,9 @@ package sample.cafekiosk.spring.domain.order;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import sample.cafekiosk.spring.domain.BaseEntity;
 import sample.cafekiosk.spring.domain.orderProduct.OrderProduct;
 import sample.cafekiosk.spring.domain.product.Product;
-import sample.cafekiosk.spring.domain.product.ProductType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
