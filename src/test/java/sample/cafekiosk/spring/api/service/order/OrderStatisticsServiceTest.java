@@ -35,7 +35,7 @@ class OrderStatisticsServiceTest {
     @Autowired private ProductRepository productRepository;
     @Autowired private OrderProductRepository orderProductRepository;
     @Autowired private MailSendHistoryRepository mailSendHistoryRepository;
-    @MockBean private MailSendClient mailSendClient;
+    @MockBean private MailSendClient mailSendClient; // Spring 띄울 때 Bean 붙임
 
 
     @AfterEach
