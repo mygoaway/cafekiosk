@@ -27,29 +27,18 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductNumberFactory productNumberFactory;
 
     // 동시성 이슈
     // product_number 필드 unique Key 설정 -> 중복이면 시스템적으로 재시도 처리
     @Transactional
     public ProductResponse createProduct(ProductCreateRequest request) {
-        String nextProductNumber = createNextProductNumber();
+        String nextProductNumber = productNumberFactory.createNextProductNumber();
 
         Product product = request.toEntity(nextProductNumber);
         Product savedProduct = productRepository.save(product);
 
         return ProductResponse.of(savedProduct);
-    }
-
-    private String createNextProductNumber() {
-        String latestProductNumber = productRepository.findLatestProduct();
-        if(latestProductNumber == null) {
-            return "001";
-        }
-
-        Integer latestProductNumberInt = Integer.valueOf(latestProductNumber);
-        int nextProductNumberInt = latestProductNumberInt + 1;
-
-        return String.format("%03d", nextProductNumberInt);
     }
 
     public List<ProductResponse> getSellingProducts() {
