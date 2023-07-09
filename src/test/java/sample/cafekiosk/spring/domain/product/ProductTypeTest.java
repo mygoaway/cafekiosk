@@ -3,6 +3,8 @@ package sample.cafekiosk.spring.domain.product;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class ProductTypeTest {
 
@@ -30,5 +32,17 @@ class ProductTypeTest {
 
         //then
         Assertions.assertThat(result).isTrue();
+    }
+
+    @DisplayName("상품 타입이 재고 관련 타입인지를 체크한다. 단, @ParameterizedTest")
+    @CsvSource({"HANDMADE,false", "BOTTLE,true", "BAKERY,true"})
+    @ParameterizedTest
+    // https://junit.org/junit5/docs/current/user-guide/#writing-tests-parameterized-tests
+    void containsStockTypeWithParameterizedTest(ProductType type, boolean expected) {
+        // when
+        boolean result = ProductType.containsStockType(type);
+
+        // then
+        Assertions.assertThat(result).isEqualTo(expected);
     }
 }
