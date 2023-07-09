@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import sample.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
 import sample.cafekiosk.spring.api.service.order.request.OrderCreateServiceRequest;
 import sample.cafekiosk.spring.api.service.order.response.OrderResponse;
 import sample.cafekiosk.spring.domain.order.OrderRepository;
@@ -37,9 +36,11 @@ class OrderServiceTest {
     @AfterEach
     void tearDown() {
         orderProductRepository.deleteAllInBatch();
-        stockRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
+        // orderRepository.deleteAll(); => select 전체 조회 후 건건히 삭제
+        // 단, 연관관계 알아서 삭제해줌, ex) order_product 관련 내용
+        stockRepository.deleteAllInBatch();
     }
 
     @DisplayName("주문번호 리스트를 받아 주문을 생성한다.")
@@ -183,6 +184,5 @@ class OrderServiceTest {
                 .sellingStatus(SELLING)
                 .name("메뉴 이름")
                 .build();
-
     }
 }
