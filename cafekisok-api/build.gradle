@@ -1,0 +1,16 @@
+tasks.named('bootJar'){ // bootJar 세팅을 켜기
+    enabled = true
+}
+
+tasks.named('jar'){ // jar 설정은 끄기
+    enabled = false
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':storage')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

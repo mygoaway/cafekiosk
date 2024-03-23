@@ -1,1 +1,5 @@
 rootProject.name = 'cafekiosk'
+
+include 'cafekisok-api'
+include 'storage'
+include 'common'
